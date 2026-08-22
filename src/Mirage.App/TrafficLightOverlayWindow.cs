@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Mirage.Native;
+using Windows.UI;
 using WinRT.Interop;
 
 namespace Mirage.App;
@@ -65,7 +66,7 @@ public sealed class TrafficLightOverlayWindow : Window
         return button;
     }
 
-    private static Microsoft.UI.Color ColorFromString(string hex)
+    private static Windows.UI.Color ColorFromString(string hex)
     {
         // Accepts #AARRGGBB or #RRGGBB.
         var c = hex.TrimStart('#');
@@ -75,13 +76,13 @@ public sealed class TrafficLightOverlayWindow : Window
             byte r = System.Convert.ToByte(c.Substring(2, 2), 16);
             byte g = System.Convert.ToByte(c.Substring(4, 2), 16);
             byte b = System.Convert.ToByte(c.Substring(6, 2), 16);
-            return Microsoft.UI.Color.FromArgb(a, r, g, b);
+            return Windows.UI.Color.FromArgb(a, r, g, b);
         }
 
         byte rr = System.Convert.ToByte(c.Substring(0, 2), 16);
         byte gg = System.Convert.ToByte(c.Substring(2, 2), 16);
         byte bb = System.Convert.ToByte(c.Substring(4, 2), 16);
-        return Microsoft.UI.Color.FromArgb(255, rr, gg, bb);
+            return Windows.UI.Color.FromArgb(255, rr, gg, bb);
     }
 
     /// <summary>Move the overlay to the target's top-right caption region.</summary>

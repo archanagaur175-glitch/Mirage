@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using Mirage.Core.Models;
 using Mirage.Native;
 
-namespace Mirage.Core
+namespace Mirage.Core.Services
 {
     /// <summary>
     /// Owns Dock lifecycle: reserves the bottom edge as a normal (non-autohide)

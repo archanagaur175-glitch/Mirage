@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mirage.Native;
 
-namespace Mirage.Core
+namespace Mirage.Core.Services
 {
     /// <summary>
     /// Tracks the HUD feature state and records the toggle in the manifest. The

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using Mirage.Native;
 
-namespace Mirage.Core
+namespace Mirage.Core.Services
 {
     /// <summary>
     /// Manages traffic-light decoration state for Mirage-owned and third-party

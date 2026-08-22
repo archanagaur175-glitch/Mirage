@@ -1,6 +1,6 @@
 using Mirage.Native;
 
-namespace Mirage.Core
+namespace Mirage.Core.Services
 {
     /// <summary>
     /// Requests the real Explorer taskbar to auto-hide (reversible, additive) so

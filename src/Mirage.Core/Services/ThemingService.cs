@@ -1,7 +1,7 @@
 using System;
 using Mirage.Native;
 
-namespace Mirage.Core
+namespace Mirage.Core.Services
 {
     /// <summary>
     /// Applies license-safe theme assets (wallpaper, fonts, cursors) via documented
