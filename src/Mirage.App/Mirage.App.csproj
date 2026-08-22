@@ -6,11 +6,22 @@
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
     <WindowsPackageType>None</WindowsPackageType>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+    <!-- Self-contained unpackaged WinUI 3 publish requires MSIX tooling enabled
+         so the app .pri resources and WindowsAppSDK runtime layout are emitted
+         correctly; otherwise Microsoft.ui.xaml.dll fail-fasts at startup
+         (exception 0xc000027b). -->
+    <EnableMsixTooling>true</EnableMsixTooling>
     <Nullable>disable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <LangVersion>latest</LangVersion>
     <RootNamespace>Mirage.App</RootNamespace>
     <AssemblyName>Mirage</AssemblyName>
+    <!-- WinUI 3 does not support trimming or single-file publish; both strip the
+         WinRT/XAML metadata the framework needs at runtime. -->
+    <PublishTrimmed>false</PublishTrimmed>
+    <PublishSingleFile>false</PublishSingleFile>
+    <PublishReadyToRun>false</PublishReadyToRun>
     <!-- Restrict to modern RIDs so the Windows App SDK package does not inject
          legacy win10-* RuntimeIdentifiers that newer .NET SDKs reject. -->
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
