@@ -24,7 +24,7 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Build Mirage.App (WinUI 3, unpackaged)
-        run: dotnet build src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }}
+        run: dotnet build src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }} /p:UseXamlCompilerExecutable=false
 
       - name: Build Mirage.Tests
         run: dotnet build src/Mirage.Tests/Mirage.Tests.csproj -c ${{ env.BUILD_CONFIG }}
@@ -53,7 +53,7 @@ jobs:
         run: dotnet test src/Mirage.Tests/Mirage.Tests.csproj -c ${{ env.BUILD_CONFIG }} --no-build
 
       - name: Publish self-contained unpackaged EXE
-        run: dotnet publish src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }} -r win-x64 -p:SelfContained=true -p:WindowsAppSDKSelfContained=true -o artifacts/mirage
+        run: dotnet publish src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }} -r win-x64 -p:SelfContained=true -p:WindowsAppSDKSelfContained=true -p:UseXamlCompilerExecutable=false -o artifacts/mirage
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
