@@ -1,0 +1,62 @@
+name: build
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: 1
+  DOTNET_NOLOGO: 1
+  BUILD_CONFIG: Release
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET 8 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Build Mirage.App (WinUI 3, unpackaged)
+        run: dotnet build src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }}
+
+      - name: Build Mirage.Tests
+        run: dotnet build src/Mirage.Tests/Mirage.Tests.csproj -c ${{ env.BUILD_CONFIG }}
+
+      - name: Telemetry guard (forbidden networking/telemetry APIs)
+        shell: pwsh
+        run: |
+          $tokens = @("System.Net","HttpClient","WebRequest","WebClient","HttpWebRequest","TcpClient","UdpClient","SmtpClient","Socket","RestSharp","Flurl","ApplicationInsights","Telemetry","Analytics","Microsoft.AppCenter","DownloadString","UploadString")
+          $files = Get-ChildItem -Path src/Mirage.App -Recurse -Filter *.cs
+          $violations = @()
+          foreach ($f in $files) {
+            foreach ($t in $tokens) {
+              if (Select-String -Path $f.FullName -Pattern [regex]::Escape($t) -SimpleMatch -Quiet) {
+                $violations += "$($f.FullName): $t"
+              }
+            }
+          }
+          if ($violations.Count -gt 0) {
+            Write-Host "Forbidden networking/telemetry APIs found in app project:"
+            $violations | ForEach-Object { Write-Host $_ }
+            exit 1
+          }
+          Write-Host "Telemetry guard passed: no forbidden APIs in app project."
+
+      - name: Run headless tests
+        run: dotnet test src/Mirage.Tests/Mirage.Tests.csproj -c ${{ env.BUILD_CONFIG }} --no-build
+
+      - name: Publish self-contained unpackaged EXE
+        run: dotnet publish src/Mirage.App/Mirage.App.csproj -c ${{ env.BUILD_CONFIG }} -r win-x64 -p:SelfContained=true -p:WindowsAppSDKSelfContained=true -o artifacts/mirage
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mirage-win-x64
+          path: artifacts/mirage

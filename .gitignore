@@ -1,0 +1,27 @@
+# .NET / Visual Studio
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Windows App SDK
+*.ilk
+*.pdb
+artifacts/
+published/
+
+# Mirage runtime state (generated on user machines, not source)
+Mirage/StateManifest.json
+Mirage/settings.json
+Mirage/Wallpapers/
+
+# OS / tooling
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# CI
+artifacts/

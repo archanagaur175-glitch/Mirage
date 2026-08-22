@@ -1,0 +1,38 @@
+<Window
+    x:Class="Mirage.App.SetupWizardWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mirage.App"
+    Title="Mirage Setup"
+    Width="560" Height="620">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Height="44" Background="{StaticResource MirageGlassDarkBrush}">
+            <TextBlock Text="Theme &amp; Asset Provisioning"
+                       Foreground="#FFF5F5F7" VerticalAlignment="Center"
+                       Margin="16,0" FontSize="14" />
+        </Grid>
+
+        <ScrollViewer Grid.Row="1" Padding="20">
+            <StackPanel Spacing="16">
+                <TextBlock Text="Apply a Tahoe-inspired look using license-safe assets only."
+                           FontSize="13" Foreground="#FF98989D" TextWrapping="Wrap" />
+                <ToggleSwitch x:Name="WallpaperToggle" Header="Install Tahoe gradient wallpaper" />
+                <ToggleSwitch x:Name="FontToggle" Header="Use system Segoe UI Variable (license-safe)" />
+                <ToggleSwitch x:Name="CursorToggle" Header="Install macOS-style cursor scheme (original)" />
+                <TextBlock x:Name="Status" FontSize="11" Foreground="#FF98989D" TextWrapping="Wrap" />
+            </StackPanel>
+        </ScrollViewer>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right"
+                    Padding="16" Spacing="12">
+            <Button Content="Apply" Click="OnApply" />
+            <Button Content="Close" Click="OnClose" />
+        </StackPanel>
+    </Grid>
+</Window>

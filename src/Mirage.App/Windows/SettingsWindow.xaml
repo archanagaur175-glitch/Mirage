@@ -1,0 +1,21 @@
+<Window
+    x:Class="Mirage.App.SettingsWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mirage.App"
+    Title="Mirage Settings"
+    Width="520" Height="580">
+    <ScrollViewer Padding="20">
+        <StackPanel Spacing="16">
+            <TextBlock Text="Settings" FontSize="22" FontWeight="SemiBold" Foreground="#FFF5F5F7" />
+            <ToggleSwitch x:Name="DarkToggle" Header="Dark mode (Liquid Glass)" />
+            <TextBlock Text="Traffic-light exclusions" FontSize="14" FontWeight="SemiBold" Foreground="#FFF5F5F7" />
+            <TextBlock Text="Processes that should never receive the macOS overlay:"
+                       FontSize="11" Foreground="#FF98989D" TextWrapping="Wrap" />
+            <TextBox x:Name="ExclusionBox" AcceptsReturn="True" Height="160"
+                     PlaceholderText="e.g. ApplicationFrameHost.exe" />
+            <Button Content="Save exclusions" Click="OnSaveExclusions" HorizontalAlignment="Stretch" />
+            <TextBlock x:Name="Note" FontSize="11" Foreground="#FF98989D" TextWrapping="Wrap" />
+        </StackPanel>
+    </ScrollViewer>
+</Window>

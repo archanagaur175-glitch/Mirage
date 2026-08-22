@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows10.0.19041.0</TargetFramework>
+    <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
+    <UseWinUI>true</UseWinUI>
+    <WindowsPackageType>None</WindowsPackageType>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <RootNamespace>Mirage.App</RootNamespace>
+    <AssemblyName>Mirage</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.5.240428000" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Mirage.Core\Mirage.Core.csproj" />
+    <ProjectReference Include="..\Mirage.Native\Mirage.Native.csproj" />
+  </ItemGroup>
+
+</Project>

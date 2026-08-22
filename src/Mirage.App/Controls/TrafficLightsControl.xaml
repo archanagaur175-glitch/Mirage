@@ -1,0 +1,14 @@
+<UserControl
+    x:Class="Mirage.App.Controls.TrafficLightsControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Mirage.App.Controls">
+    <StackPanel Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+        <Button x:Name="CloseButton" Width="12" Height="12" CornerRadius="6"
+                Background="{StaticResource MirageRedBrush}" Click="OnClose" />
+        <Button x:Name="MinButton" Width="12" Height="12" CornerRadius="6"
+                Background="{StaticResource MirageYellowBrush}" Click="OnMinimize" />
+        <Button x:Name="MaxButton" Width="12" Height="12" CornerRadius="6"
+                Background="{StaticResource MirageGreenBrush}" Click="OnMaximize" />
+    </StackPanel>
+</UserControl>
