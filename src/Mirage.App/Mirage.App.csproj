@@ -6,7 +6,6 @@
     <TargetPlatformMinVersion>10.0.19041.0</TargetPlatformMinVersion>
     <UseWinUI>true</UseWinUI>
     <WindowsPackageType>None</WindowsPackageType>
-    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
     <!-- Self-contained unpackaged WinUI 3 publish requires MSIX tooling enabled
          so the app .pri resources and WindowsAppSDK runtime layout are emitted
          correctly; otherwise Microsoft.ui.xaml.dll fail-fasts at startup
