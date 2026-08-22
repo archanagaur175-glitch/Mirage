@@ -36,11 +36,11 @@ jobs:
         shell: pwsh
         run: |
           $tokens = @("System.Net","HttpClient","WebRequest","WebClient","HttpWebRequest","TcpClient","UdpClient","SmtpClient","Socket","RestSharp","Flurl","ApplicationInsights","Telemetry","Analytics","Microsoft.AppCenter","DownloadString","UploadString")
-          $files = Get-ChildItem -Path src/Mirage.App -Recurse -Filter *.cs
           $violations = @()
-          foreach ($f in $files) {
+          foreach ($f in Get-ChildItem -Path src/Mirage.App -Recurse -Filter *.cs) {
+            $content = Get-Content -Path $f.FullName -Raw
             foreach ($t in $tokens) {
-              if (Select-String -Path $f.FullName -Pattern [regex]::Escape($t) -SimpleMatch -Quiet) {
+              if ($content.Contains($t, [System.StringComparison]::OrdinalIgnoreCase)) {
                 $violations += "$($f.FullName): $t"
               }
             }
