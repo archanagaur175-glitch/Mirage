@@ -11,6 +11,9 @@
     <LangVersion>latest</LangVersion>
     <RootNamespace>Mirage.App</RootNamespace>
     <AssemblyName>Mirage</AssemblyName>
+    <!-- Restrict to modern RIDs so the Windows App SDK package does not inject
+         legacy win10-* RuntimeIdentifiers that newer .NET SDKs reject. -->
+    <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
   </PropertyGroup>
 
   <ItemGroup>
