@@ -1,5 +1,6 @@
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
 using Mirage.Core.Services;
 
 namespace Mirage.App;
@@ -11,6 +12,8 @@ public sealed partial class SettingsWindow : Window
     public SettingsWindow()
     {
         this.InitializeComponent();
+
+        AppWindow?.Resize(new SizeInt32(520, 580));
 
         ExclusionBox.Text = string.Join("\n", _traffic.ExcludedProcesses());
         Note.Text = "Mirage makes zero network requests. All changes are local and reversible via the Revert Switch.";

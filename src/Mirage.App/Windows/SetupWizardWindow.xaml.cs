@@ -1,6 +1,7 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
+using Microsoft.UI.Windowing;
 using Mirage.Core;
 using Mirage.Core.Services;
 
@@ -14,6 +15,7 @@ public sealed partial class SetupWizardWindow : Window
     public SetupWizardWindow()
     {
         this.InitializeComponent();
+        AppWindow?.Resize(new SizeInt32(560, 620));
     }
 
     private void OnApply(object sender, RoutedEventArgs e)

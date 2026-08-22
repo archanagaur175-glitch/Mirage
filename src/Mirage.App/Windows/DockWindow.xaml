@@ -4,8 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mirage.App"
     xmlns:controls="using:Mirage.App.Controls"
-    Title="Mirage Dock"
-    Height="86">
+    Title="Mirage Dock">
     <Grid>
         <Grid.Background>
             <SolidColorBrush Color="#B8FFFFFF" />

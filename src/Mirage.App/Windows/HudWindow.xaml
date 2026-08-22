@@ -3,8 +3,7 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mirage.App"
-    Title="Mirage HUD"
-    Height="36">
+    Title="Mirage HUD">
     <Grid>
         <Grid.Background>
             <SolidColorBrush Color="#B8FFFFFF" />

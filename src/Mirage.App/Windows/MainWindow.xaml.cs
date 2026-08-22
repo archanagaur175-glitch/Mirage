@@ -14,6 +14,8 @@ public sealed partial class MainWindow : Window
     {
         this.InitializeComponent();
 
+        AppWindow?.Resize(new SizeInt32(440, 660));
+
         // Custom (macOS-style) title bar drawn in the client area.
         if (AppWindow is not null)
         {
