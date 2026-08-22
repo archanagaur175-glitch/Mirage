@@ -14,6 +14,9 @@
     <!-- Restrict to modern RIDs so the Windows App SDK package does not inject
          legacy win10-* RuntimeIdentifiers that newer .NET SDKs reject. -->
     <RuntimeIdentifiers>win-x64</RuntimeIdentifiers>
+    <!-- Run the XAML compiler in-process (managed) instead of exec'ing the
+         net472 XamlCompiler.exe, which fails silently under `dotnet build` on CI. -->
+    <UseXamlCompilerExecutable>false</UseXamlCompilerExecutable>
   </PropertyGroup>
 
   <ItemGroup>
