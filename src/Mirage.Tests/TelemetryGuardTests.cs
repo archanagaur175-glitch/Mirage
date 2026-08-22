@@ -33,6 +33,13 @@ public class TelemetryGuardTests
         var violations = new List<string>();
         foreach (var file in Directory.EnumerateFiles(appDir, "*.cs", SearchOption.AllDirectories))
         {
+            string normalized = file.Replace('/', '\\');
+            if (normalized.Contains("\\obj\\", StringComparison.OrdinalIgnoreCase) ||
+                normalized.Contains("\\bin\\", StringComparison.OrdinalIgnoreCase))
+            {
+                continue;
+            }
+
             string text = File.ReadAllText(file);
             foreach (var token in Forbidden)
             {
