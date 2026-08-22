@@ -3,6 +3,7 @@ using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Windowing;
 using Mirage.Core;
 using Mirage.Core.Services;
+using Windows.Graphics;
 
 namespace Mirage.App;
 
@@ -14,7 +15,7 @@ public sealed partial class MainWindow : Window
     {
         this.InitializeComponent();
 
-        AppWindow?.Resize(new SizeInt32(440, 660));
+        AppWindow?.Resize(new Windows.Graphics.SizeInt32(440, 660));
 
         // Custom (macOS-style) title bar drawn in the client area.
         if (AppWindow is not null)

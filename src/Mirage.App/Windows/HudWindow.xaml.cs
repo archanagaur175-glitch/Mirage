@@ -42,7 +42,7 @@ public sealed partial class HudWindow : Window
 
         try
         {
-            var report = Battery.GetAggregateBattery().GetReport();
+            var report = Battery.AggregateBattery.GetReport();
             var remaining = report.RemainingCapacityInMilliwattHours;
             var full = report.FullChargeCapacityInMilliwattHours;
             if (full.HasValue && full.Value > 0 && remaining.HasValue)

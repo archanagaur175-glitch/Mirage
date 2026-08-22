@@ -2,6 +2,7 @@ using Microsoft.UI.Xaml;
 using Microsoft.UI.Xaml.Controls;
 using Microsoft.UI.Xaml.Media;
 using Mirage.Native;
+using Windows.Graphics;
 using Windows.UI;
 using WinRT.Interop;
 
@@ -22,8 +23,6 @@ public sealed class TrafficLightOverlayWindow : Window
     {
         _target = target;
         Title = "Mirage Traffic Lights";
-        Width = 66;
-        Height = 26;
 
         var panel = new StackPanel
         {
@@ -39,7 +38,8 @@ public sealed class TrafficLightOverlayWindow : Window
         panel.Children.Add(MakeLight(this, "#FF28C840", NativeConstants.SC_MAXIMIZE));
 
         Content = panel;
-        Background = new SolidColorBrush(Microsoft.UI.Colors.Transparent);
+
+        AppWindow?.Resize(new SizeInt32(66, 26));
 
         _self = WindowNative.GetWindowHandle(this);
 
