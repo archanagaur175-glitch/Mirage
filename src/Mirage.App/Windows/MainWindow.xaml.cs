@@ -15,14 +15,9 @@ public sealed partial class MainWindow : Window
     {
         this.InitializeComponent();
 
-        AppWindow?.Resize(new Windows.Graphics.SizeInt32(440, 660));
+        this.Activated += OnMainWindowActivated;
 
         // Custom (macOS-style) title bar drawn in the client area.
-        if (AppWindow is not null)
-        {
-            AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
-        }
-
         Lights.Target = this;
 
         DockToggle.IsOn = _features.DockEnabled;
@@ -31,6 +26,16 @@ public sealed partial class MainWindow : Window
         TaskbarToggle.IsOn = _features.TaskbarHidden;
 
         StatusText.Text = "Mirage is idle. Toggle a feature to begin.";
+    }
+
+    private void OnMainWindowActivated(object sender, WindowActivatedEventArgs e)
+    {
+        this.Activated -= OnMainWindowActivated;
+        if (AppWindow is not null)
+        {
+            AppWindow.Resize(new Windows.Graphics.SizeInt32(440, 660));
+            AppWindow.TitleBar.ExtendsContentIntoTitleBar = true;
+        }
     }
 
     private void OnDockToggled(object sender, RoutedEventArgs e)
