@@ -48,7 +48,8 @@ public sealed class TrafficLightOverlayWindow : Window
         int ex = WindowStyles.GetExStyle(_self);
         WindowStyles.SetExStyle(_self, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_TOOLWINDOW);
 
-        this.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(220, 28, 28, 32));
+        this.SystemBackdrop = new Microsoft.UI.Xaml.Media.DesktopAcrylicBackdrop();
+        panel.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(220, 28, 28, 32));
 
         Reposition();
         Activate();
