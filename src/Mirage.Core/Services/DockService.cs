@@ -43,11 +43,12 @@ namespace Mirage.Core.Services
         public IReadOnlyList<RunningApp> EnumerateRunningApps()
         {
             var apps = new List<RunningApp>();
+            uint self = (uint)Environment.ProcessId;
             foreach (var hwnd in WindowEnumerator.Enumerate())
             {
                 uint pid;
                 Hittest.GetWindowThreadProcessId(hwnd, out pid);
-                if (pid == 0)
+                if (pid == 0 || pid == self)
                 {
                     continue;
                 }

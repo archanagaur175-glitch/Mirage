@@ -1,9 +1,11 @@
 using System;
 using Microsoft.UI.Xaml;
 using Microsoft.UI.Windowing;
+using Microsoft.UI.Xaml.Media;
 using Mirage.Core;
 using Mirage.Core.Services;
 using Mirage.Native;
+using Windows.UI;
 using WinRT.Interop;
 
 namespace Mirage.App;
@@ -19,13 +21,14 @@ public sealed partial class DockWindow : Window
         this.InitializeComponent();
         _hwnd = WindowNative.GetWindowHandle(this);
 
-        // Topmost, tool-window, layered (so it floats above the shell).
+        // Topmost + tool-window so it floats above the shell. NOTE: WS_EX_LAYERED is
+        // intentionally NOT set — WinUI 3 does not composite XAML correctly with that
+        // flag, which previously rendered the dock as a blank white bar.
         int ex = WindowStyles.GetExStyle(_hwnd);
-        WindowStyles.SetExStyle(_hwnd, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_TOOLWINDOW | NativeConstants.WS_EX_LAYERED);
+        WindowStyles.SetExStyle(_hwnd, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_TOOLWINDOW);
 
-        // Tahoe-style Mica backdrop.
-        Dwm.SetBackdropType(_hwnd, NativeConstants.DWMSBT_MAINWINDOW);
-        Dwm.SetCornerPreference(_hwnd, 2 /* DWMWCP_ROUND */);
+        // Frosted Tahoe glass via the WinUI 3 acrylic backdrop (no DWM flag needed).
+        this.SystemBackdrop = new DesktopAcrylicBackdrop();
 
         PositionAtBottom();
         Populate();
@@ -60,8 +63,40 @@ public sealed partial class DockWindow : Window
         {
             var item = new Controls.DockItemControl { App = app };
             item.SetRunning(true);
+            item.SetGlyph(GlyphFor(app.Title), ColorFor(app.Title));
+            item.Activated += OnItemActivated;
             Panel.Children.Add(item);
         }
+    }
+
+    private static void OnItemActivated(Mirage.Core.Models.RunningApp? app)
+    {
+        if (app is not null)
+        {
+            Hittest.ActivateWindow(app.Handle);
+        }
+    }
+
+    private static string GlyphFor(string title)
+    {
+        foreach (var c in title)
+        {
+            if (char.IsLetterOrDigit(c))
+            {
+                return c.ToString().ToUpperInvariant();
+            }
+        }
+        return "?";
+    }
+
+    private static Windows.UI.Color ColorFor(string title)
+    {
+        int hash = 0;
+        foreach (var c in title)
+        {
+            hash = (hash * 31 + c) & 0x7fffffff;
+        }
+        return Windows.UI.Color.FromArgb(255, (byte)(50 + (hash % 160)), (byte)(90 + ((hash >> 3) % 120)), (byte)(160 + ((hash >> 6) % 80)));
     }
 
     public static void Show()

@@ -4,12 +4,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mirage.App"
     Title="Mirage HUD">
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="#B8FFFFFF" />
-        </Grid.Background>
+    <Grid Background="Transparent">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                    VerticalAlignment="Center" Spacing="16" Padding="0,0,18,0">
+                    VerticalAlignment="Center" Spacing="16" Padding="0,0,18,0"
+                    Foreground="#FF1D1D1F">
             <TextBlock x:Name="WifiText" Text="Wi-Fi" FontSize="12" />
             <TextBlock x:Name="BtText" Text="Bluetooth" FontSize="12" />
             <TextBlock x:Name="BatteryText" FontSize="12" />

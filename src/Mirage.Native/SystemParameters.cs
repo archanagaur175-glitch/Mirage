@@ -43,5 +43,37 @@ namespace Mirage.Native
         }
 
         public static int GetSystemMetrics(int index) => NativeMethods.GetSystemMetrics(index);
+
+        public static bool SetNonClientFont(string fontName)
+        {
+            var ncm = new NONCLIENTMETRICS { cbSize = MarshalHelper.SizeOf<NONCLIENTMETRICS>() };
+            if (!NativeMethods.SystemParametersInfo(0x0029 /* SPI_GETNONCLIENTMETRICS */, ncm.cbSize, ref ncm, 0))
+            {
+                return false;
+            }
+
+            ncm.lfCaptionFont.lfFaceName = fontName;
+            ncm.lfSmCaptionFont.lfFaceName = fontName;
+            ncm.lfMenuFont.lfFaceName = fontName;
+            ncm.lfStatusFont.lfFaceName = fontName;
+            ncm.lfMessageFont.lfFaceName = fontName;
+
+            return NativeMethods.SystemParametersInfo(
+                0x002A /* SPI_SETNONCLIENTMETRICS */,
+                ncm.cbSize,
+                ref ncm,
+                NativeConstants.SPIF_UPDATEINIFILE | NativeConstants.SPIF_SENDCHANGE);
+        }
+
+        /// <summary>Reload the active cursor scheme (best-effort; requires the
+        /// scheme/cursor files to be registered first).</summary>
+        public static bool SetCursorScheme()
+        {
+            return NativeMethods.SystemParametersInfo(
+                0x0057 /* SPI_SETCURSORS */,
+                0,
+                IntPtr.Zero,
+                NativeConstants.SPIF_UPDATEINIFILE | NativeConstants.SPIF_SENDCHANGE);
+        }
     }
 }

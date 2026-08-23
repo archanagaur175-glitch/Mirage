@@ -26,8 +26,10 @@ namespace Mirage.Core.Services
 
         public void SetCursorScheme(string path)
         {
-            // Apply a .cur/.ani scheme via documented SPI_SETCURSORS after copying
-            // the files into the user's local Mirage assets folder (license-safe).
+            // Reload the active cursor scheme. A full macOS-style cursor swap would
+            // require shipping .cur assets (which we can't, for licensing); this at
+            // least re-applies whatever scheme is registered and records the change.
+            SystemParameters.SetCursorScheme();
             StateManifest.Instance.Record(new Mutation
             {
                 Feature = "Theme",
@@ -39,6 +41,7 @@ namespace Mirage.Core.Services
 
         public void SetNonClientFont(string fontName)
         {
+            SystemParameters.SetNonClientFont(fontName);
             StateManifest.Instance.Record(new Mutation
             {
                 Feature = "Theme",

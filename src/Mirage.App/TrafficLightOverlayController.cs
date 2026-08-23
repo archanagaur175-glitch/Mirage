@@ -5,9 +5,11 @@ using Mirage.Native;
 namespace Mirage.App;
 
 /// <summary>
-/// Drives the out-of-process traffic-light overlay for the foreground third-party
-/// window. Tracks the target with SetWinEventHook (event-driven, never polling)
-/// and hides the overlay when the target is minimized, hidden, cloaked or closed.
+/// Drives the out-of-process traffic-light overlay for whichever third-party
+/// window is currently in the foreground. Tracks foreground changes via
+/// EVENT_SYSTEM_FOREGROUND (event-driven, never polling) and keeps the overlay
+/// glued to that window's title-bar region. The target process is never injected
+/// into or subclassed — only standard window messages are sent.
 /// </summary>
 public static class TrafficLightOverlayController
 {
@@ -16,29 +18,25 @@ public static class TrafficLightOverlayController
     private static WinEventProc? _callback;
     private static readonly TrafficLightService _traffic = new();
 
+    private const uint EVENT_SYSTEM_FOREGROUND = 0x0003;
+
     public static void Start()
     {
-        if (_overlay is not null)
+        if (_callback is not null)
         {
             return;
         }
-
-        var target = Hittest.GetForegroundWindow();
-        if (target == IntPtr.Zero || _traffic.IsExcluded(target) || BelongsToMirage(target))
-        {
-            return;
-        }
-
-        _overlay = new TrafficLightOverlayWindow(target);
 
         _callback = OnWinEvent;
         _hook = EventHook.Set(
-            NativeConstants.EVENT_OBJECT_LOCATIONCHANGE,
+            NativeConstants.EVENT_SYSTEM_FOREGROUND,
             NativeConstants.EVENT_OBJECT_LOCATIONCHANGE,
             _callback,
             idProcess: 0,
             idThread: 0,
             flags: NativeConstants.WINEVENT_OUTOFCONTEXT);
+
+        AttachToForeground();
     }
 
     public static void Stop()
@@ -54,27 +52,57 @@ public static class TrafficLightOverlayController
         _callback = null;
     }
 
-    private static void OnWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+    private static void AttachToForeground()
     {
+        var fg = Hittest.GetForegroundWindow();
+        if (!IsValidTarget(fg))
+        {
+            _overlay?.HideOverlay();
+            return;
+        }
+
         if (_overlay is null)
         {
-            return;
+            _overlay = new TrafficLightOverlayWindow(fg);
         }
-
-        if (hwnd != IntPtr.Zero && hwnd != _overlay.Target)
+        else
         {
-            return;
+            _overlay.SetTarget(fg);
+        }
+    }
+
+    private static bool IsValidTarget(IntPtr hwnd)
+    {
+        if (hwnd == IntPtr.Zero || BelongsToMirage(hwnd) || _traffic.IsExcluded(hwnd))
+        {
+            return false;
         }
 
+        return true;
+    }
+
+    private static void OnWinEvent(IntPtr hWinEventHook, uint eventType, IntPtr hwnd, int idObject, int idChild, uint dwEventThread, uint dwmsEventTime)
+    {
         switch (eventType)
         {
-            case NativeConstants.EVENT_OBJECT_LOCATIONCHANGE:
-                _overlay.Reposition();
+            case EVENT_SYSTEM_FOREGROUND:
+                AttachToForeground();
                 break;
+
+            case NativeConstants.EVENT_OBJECT_LOCATIONCHANGE:
+                if (_overlay is not null && (hwnd == IntPtr.Zero || hwnd == _overlay.Target))
+                {
+                    _overlay.Reposition();
+                }
+                break;
+
             case NativeConstants.EVENT_OBJECT_HIDE:
             case NativeConstants.EVENT_OBJECT_DESTROY:
             case NativeConstants.EVENT_SYSTEM_MINIMIZESTART:
-                _overlay.HideOverlay();
+                if (_overlay is not null && hwnd == _overlay.Target)
+                {
+                    _overlay.HideOverlay();
+                }
                 break;
         }
     }

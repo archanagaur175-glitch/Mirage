@@ -5,10 +5,7 @@
     xmlns:local="using:Mirage.App"
     xmlns:controls="using:Mirage.App.Controls"
     Title="Mirage Dock">
-    <Grid>
-        <Grid.Background>
-            <SolidColorBrush Color="#B8FFFFFF" />
-        </Grid.Background>
+    <Grid Background="Transparent">
         <controls:MagnifyDockPanel x:Name="Panel"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />

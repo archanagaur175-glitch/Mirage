@@ -7,9 +7,12 @@ namespace Mirage.App.Controls;
 
 public sealed partial class DockItemControl : UserControl
 {
+    public event Action<RunningApp?>? Activated;
+
     public DockItemControl()
     {
         this.InitializeComponent();
+        this.Tapped += (s, e) => Activated?.Invoke(App);
     }
 
     public RunningApp? App { get; set; }
@@ -31,8 +34,9 @@ public sealed partial class DockItemControl : UserControl
         Badge.Visibility = Visibility.Visible;
     }
 
-    public void SetIconBrush(Brush brush)
+    public void SetGlyph(string text, Windows.UI.Color color)
     {
-        Icon.Fill = brush;
+        Glyph.Text = text;
+        Tile.Fill = new SolidColorBrush(color);
     }
 }

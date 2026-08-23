@@ -3,8 +3,10 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Mirage.App.Controls">
-    <Grid Width="48" Height="48" VerticalAlignment="Center" HorizontalAlignment="Center">
-        <Rectangle x:Name="Icon" RadiusX="10" RadiusY="10" Width="44" Height="44" Fill="{StaticResource MirageAccentBrush}" />
+    <Grid Width="52" Height="52" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Rectangle x:Name="Tile" RadiusX="12" RadiusY="12" Width="48" Height="48" Fill="{StaticResource MirageAccentBrush}" />
+        <TextBlock x:Name="Glyph" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   FontSize="18" FontWeight="SemiBold" Foreground="White" />
         <Ellipse x:Name="RunningDot" Width="6" Height="6" Fill="#FF28C840"
                  HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,0,0,-4"
                  Visibility="Collapsed" />

@@ -53,5 +53,12 @@ namespace Mirage.Native
                 0, 0, 0, 0,
                 show ? NativeConstants.SWP_SHOWWINDOW : NativeConstants.SWP_HIDEWINDOW | NativeConstants.SWP_NOSIZE | NativeConstants.SWP_NOMOVE | NativeConstants.SWP_NOZORDER);
         }
+
+        /// <summary>Restore (if minimized) and bring the window to the foreground.</summary>
+        public static void ActivateWindow(IntPtr hWnd)
+        {
+            NativeMethods.ShowWindow(hWnd, 9 /* SW_RESTORE */);
+            NativeMethods.SetForegroundWindow(hWnd);
+        }
     }
 }

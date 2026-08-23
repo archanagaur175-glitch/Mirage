@@ -46,16 +46,22 @@ namespace Mirage.Core
             bw.Write(0); bw.Write(0);
 
             // Pixel data (bottom-up, BGR)
+            double cx = width * 0.5;
+            double cy = height * 0.42;
+            double maxd = Math.Sqrt(cx * cx + cy * cy);
             for (int y = 0; y < height; y++)
             {
                 // Vertical gradient: deep blue (top) -> violet (bottom).
                 double t = (double)y / (height - 1);
-                byte r = (byte)(20 + t * 80);
-                byte g = (byte)(30 + t * 20);
-                byte b = (byte)(120 + t * 90);
-
                 for (int x = 0; x < width; x++)
                 {
+                    // Soft radial glow toward the upper-center (Tahoe "light").
+                    double d = Math.Sqrt((x - cx) * (x - cx) + (y - cy) * (y - cy)) / maxd;
+                    double glow = Math.Max(0.0, 1.0 - d);
+                    byte r = (byte)Math.Min(255, 18 + t * 70 + glow * 90);
+                    byte g = (byte)Math.Min(255, 26 + t * 26 + glow * 60);
+                    byte b = (byte)Math.Min(255, 110 + t * 90 + glow * 40);
+
                     bw.Write((byte)b);
                     bw.Write((byte)g);
                     bw.Write((byte)r);

@@ -16,7 +16,7 @@ namespace Mirage.App;
 /// </summary>
 public sealed class TrafficLightOverlayWindow : Window
 {
-    private readonly IntPtr _target;
+    private IntPtr _target;
     private readonly IntPtr _self;
 
     public TrafficLightOverlayWindow(IntPtr target)
@@ -43,8 +43,12 @@ public sealed class TrafficLightOverlayWindow : Window
 
         _self = WindowNative.GetWindowHandle(this);
 
+        // Topmost + tool-window only (no WS_EX_LAYERED — WinUI 3 renders blank
+        // with that flag). The overlay is a small dark pill carrying the lights.
         int ex = WindowStyles.GetExStyle(_self);
-        WindowStyles.SetExStyle(_self, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_LAYERED | NativeConstants.WS_EX_TOOLWINDOW);
+        WindowStyles.SetExStyle(_self, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_TOOLWINDOW);
+
+        this.Background = new SolidColorBrush(Windows.UI.Color.FromArgb(220, 28, 28, 32));
 
         Reposition();
         Activate();
@@ -52,6 +56,13 @@ public sealed class TrafficLightOverlayWindow : Window
 
     public IntPtr Target => _target;
     public IntPtr Handle => _self;
+
+    /// <summary>Point the overlay at a different window and re-anchor it.</summary>
+    public void SetTarget(IntPtr newTarget)
+    {
+        _target = newTarget;
+        Reposition();
+    }
 
     private static Button MakeLight(TrafficLightOverlayWindow owner, string color, int command)
     {

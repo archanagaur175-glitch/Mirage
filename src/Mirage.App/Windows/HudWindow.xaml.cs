@@ -1,5 +1,6 @@
 using System;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Media;
 using Mirage.Native;
 using Windows.Devices.Power;
 using WinRT.Interop;
@@ -16,10 +17,11 @@ public sealed partial class HudWindow : Window
         this.InitializeComponent();
         var hwnd = WindowNative.GetWindowHandle(this);
 
+        // Topmost + tool-window only (no WS_EX_LAYERED — see DockWindow for why).
         int ex = WindowStyles.GetExStyle(hwnd);
-        WindowStyles.SetExStyle(hwnd, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_LAYERED | NativeConstants.WS_EX_TOOLWINDOW);
+        WindowStyles.SetExStyle(hwnd, ex | NativeConstants.WS_EX_TOPMOST | NativeConstants.WS_EX_TOOLWINDOW);
 
-        Dwm.SetBackdropType(hwnd, NativeConstants.DWMSBT_MAINWINDOW);
+        this.SystemBackdrop = new DesktopAcrylicBackdrop();
 
         PositionAtTop();
 
