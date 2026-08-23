@@ -6,12 +6,11 @@
     Title="Mirage HUD">
     <Grid Background="Transparent">
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right"
-                    VerticalAlignment="Center" Spacing="16" Padding="0,0,18,0"
-                    Foreground="#FF1D1D1F">
-            <TextBlock x:Name="WifiText" Text="Wi-Fi" FontSize="12" />
-            <TextBlock x:Name="BtText" Text="Bluetooth" FontSize="12" />
-            <TextBlock x:Name="BatteryText" FontSize="12" />
-            <TextBlock x:Name="ClockText" FontSize="12" FontWeight="SemiBold" />
+                    VerticalAlignment="Center" Spacing="16" Padding="0,0,18,0">
+            <TextBlock x:Name="WifiText" Text="Wi-Fi" FontSize="12" Foreground="#FF1D1D1F" />
+            <TextBlock x:Name="BtText" Text="Bluetooth" FontSize="12" Foreground="#FF1D1D1F" />
+            <TextBlock x:Name="BatteryText" FontSize="12" Foreground="#FF1D1D1F" />
+            <TextBlock x:Name="ClockText" FontSize="12" FontWeight="SemiBold" Foreground="#FF1D1D1F" />
         </StackPanel>
     </Grid>
 </Window>
